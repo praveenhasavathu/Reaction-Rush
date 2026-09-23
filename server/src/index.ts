@@ -29,14 +29,15 @@ const httpServer = createServer(app);
 const port = Number(process.env.PORT || 3001);
 const clientOrigin = process.env.CLIENT_ORIGIN;
 
-app.use(cors({ origin: clientOrigin ? clientOrigin.split(",").map((v) => v.trim()) : true }));
-app.use(express.json());
-app.get("/healthz", (_req, res) => res.json({ ok: true, rooms: rooms.size }));
+app.use(express.static(clientDistPath));
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const clientDist = path.resolve(__dirname, "../../client/dist");
+app.get("*", (_req, res) => {
+  res.sendFile(path.join(clientDistPath, "index.html"));
+});
 
+const __filename = fileURLToPath(import path from "node:path";);
+const __dirname = process.cwd();
+const clientDistPath = path.resolve(process.cwd(), "client", "dist");
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(clientDist));
   app.get("/{*splat}", (_req, res) => res.sendFile(path.join(clientDist, "index.html")));
@@ -179,3 +180,4 @@ setInterval(cleanupRooms, 60_000).unref();
 httpServer.listen(port, "0.0.0.0", () => {
   console.log(`Reaction Rush server listening on http://localhost:${port}`);
 });
+
