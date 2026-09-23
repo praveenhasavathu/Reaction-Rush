@@ -1,0 +1,13 @@
+{
+  "name": "reaction-rush",
+  "version": "2.0.0",
+  "private": true,
+  "workspaces": ["client", "server", "shared"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "npm run build --workspace shared && concurrently -k -n SERVER,CLIENT -c blue,green \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
+    "build": "npm run build --workspace shared && npm run build --workspace client && npm run build --workspace server",
+    "start": "npm run start --workspace server"
+  },
+  "devDependencies": { "concurrently": "^9.2.1" }
+}
