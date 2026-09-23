@@ -72,9 +72,8 @@ app.get("/healthz", (_req, res) => {
  * process.cwd()/client/dist
  */
 const clientDistPath = path.resolve(
-  process.cwd(),
-  "client",
-  "dist",
+  __dirname,
+  "../../client/dist",
 );
 
 /*
